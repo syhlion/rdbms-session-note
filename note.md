@@ -32,7 +32,7 @@
 
 #### 有限度服務的系統
 * 在超乎預計的用戶量時，系統要拒絕部份用戶
-    - http 503 
+    - http 503
     - 排隊機制
 * 收下用戶請求，先回應用戶"請求收下"
     - asynchronous IO
@@ -46,7 +46,7 @@
 * durability
 
 #### RDBMS locking
-* RDMBS 在 update時 會保證資料完整性，自動上 write lock 
+* RDMBS 在 update時 會保證資料完整性，自動上 write lock
 
 #### phantom read
 [說明](phantom read)
@@ -72,7 +72,8 @@
  - 別害怕OR/M層的麻煩，系統發生blocking要花的時間成本比OR/M多
  - 如果有 natural key 請優先使用，natural PK 有機會能用作 index skip scan
  - 真的不能用 natural key時 請用 uuid
-> instagram 案例 它門的 photo pk 為 {uid + timestamp} 因為同一使用者同一毫秒不會有兩張相片上傳 
+
+ > instagram 案例 它門的 photo pk 為 {uid + timestamp} 因為同一使用者同一毫秒不會有兩張相片上傳 
 
 * 為了報表而建立index
  - index會大幅影響 master 的 write 效能

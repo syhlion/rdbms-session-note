@@ -45,6 +45,8 @@
 * isolation
 * durability
 
+> 請參考 [wiki](https://zh.wikipedia.org/zh-tw/ACID)
+
 #### RDBMS locking
 * RDMBS 在 update時 會保證資料完整性，自動上 write lock
 
@@ -61,19 +63,28 @@
 
 #### RMDBS 常犯錯誤
 * 超過100行 會有報應
+> 絕對會有報應
+
 * 把系統邏輯放到RDBMS的trigger
     - 當出現了bug，要修改資料，trigger會妨礙你
+
+> 如果做出 a trigger b trigger c trigger d... 這種結構，爆時就會知道報應了
+
 * 在sp使用 loop
     - sql本身是 set-based 盡量用 set operate
+    
 * 在sp中使用 recursion
+> 在裡面有遞迴是白痴
 
 #### 常犯錯誤 schema
 * 使用auto-increment 作為pk
  - 別害怕OR/M層的麻煩，系統發生blocking要花的時間成本比OR/M多
  - 如果有 natural key 請優先使用，natural PK 有機會能用作 index skip scan
  - 真的不能用 natural key時 請用 uuid
+> 使用 auto-increment 當作pk，在大量資料新增時，db裡面隱藏紀錄auto-increment的表，也會造成lock造成後面資料會緩慢。
+>
+> instagram 案例 它門的 photo pk 為 {uid + timestamp} 因為同一使用者同一毫秒不會有兩張相片上傳
 
- > instagram 案例 它門的 photo pk 為 {uid + timestamp} 因為同一使用者同一毫秒不會有兩張相片上傳 
 
 * 為了報表而建立index
  - index會大幅影響 master 的 write 效能
@@ -90,7 +101,11 @@
  - 會有大量的rows 在特定 columns 是 null value
  - 把[狗] {主人，體重，高度} 和 [貓] {主人，體重，高度，毛色，可愛度}放在同一張table
 
-###### 名詞
+> 理想的正規化，當屈現實的需求，常常無法作到完美的正規化，或是要作到這樣的正規化成本要耗費很多
+
+*****
+
+###### 名詞查詢
 * Elasticsearch
 * redis channel
 * OLAP

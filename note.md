@@ -29,6 +29,7 @@
 * 部份數據是（相對上）不重要的
 * 越能把正確性『放鬆』，系統便會越快
     - amazon 的 shopp cat 就適合放在NoSql 不適合放在 RDMBS
+
 #### 有限度服務的系統
 * 在超乎預計的用戶量時，系統要拒絕部份用戶
     - http 503 
@@ -48,6 +49,7 @@
 * RDMBS 在 update時 會保證資料完整性，自動上 write lock 
 
 #### phantom read
+[說明](phantom read)
 
 #### non-repeated read
 
@@ -70,14 +72,18 @@
  - 別害怕OR/M層的麻煩，系統發生blocking要花的時間成本比OR/M多
  - 如果有 natural key 請優先使用，natural PK 有機會能用作 index skip scan
  - 真的不能用 natural key時 請用 uuid
+> instagram 案例 它門的 photo pk 為 {uid + timestamp} 因為同一使用者同一毫秒不會有兩張相片上傳 
+
 * 為了報表而建立index
  - index會大幅影響 master 的 write 效能
  - orcale :每個額外的index 便多用3X時間
  - 報表能在slave node 慢慢產生
  - 報表很多時侯需要range scan, secondary B + tree index 幫助不大
+
 * 在一般系統中使用bitmap index
  - bitmap index 是針對報表的
  - update bitmap index 是單線程的
+
 * 把不同種類的row 放在同一table
  - 會有一個叫row_type的 column，application tier 需要先知道 row_type是什麼才能決定怎去處理row
  - 會有大量的rows 在特定 columns 是 null value
